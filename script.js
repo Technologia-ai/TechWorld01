@@ -68,14 +68,18 @@ async function translateText() {
   const text = document.getElementById("textToTranslate").value;
   const lang = document.getElementById("targetLang").value;
 
-  const res = await fetch("https://libretranslate.de/translate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ q: text, source: "en", target: lang, format: "text" }),
-  });
+  try {
+    const res = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ q: text, source: "en", target: lang, format: "text" }),
+    });
 
-  const data = await res.json();
-  document.getElementById("translatedText").innerText = `Translated: ${data.translatedText}`;
+    const data = await res.json();
+    document.getElementById("translatedText").innerText = `Translated: ${data.translatedText}`;
+  } catch (error) {
+    document.getElementById("translatedText").innerText = "Translation failed.";
+  }
 }
 
 // Recipe Generator (simulated)
@@ -85,4 +89,21 @@ function getRecipe() {
     Based on: ${ingredients}<br>
     Try making a simple stir fry! Sauté your ingredients with garlic, soy sauce, and a dash of sesame oil.
   `;
-  document.getElementById("recipeResult
+  document.getElementById("recipeResult").innerHTML = fakeRecipe;
+}
+
+// Resume Builder
+function generateResume() {
+  const name = document.getElementById("resName").value;
+  const email = document.getElementById("resEmail").value;
+  const skills = document.getElementById("resSkills").value;
+  const summary = document.getElementById("resSummary").value;
+
+  const resumeHTML = `
+    <h3>${name}</h3>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Skills:</strong> ${skills}</p>
+    <p><strong>Summary:</strong> ${summary}</p>
+  `;
+  document.getElementById("resumeOutput").innerHTML = resumeHTML;
+}
